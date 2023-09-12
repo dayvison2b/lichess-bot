@@ -8,11 +8,6 @@ lichess_token = 'your_token_here'
 lichess_url = 'https://lichess.org'
 stockfish_path = "./stockfish"
 
-def autenticar():
-    headers = {'Authorization': f"Bearer {lichess_token}"}
-    response = requests.get(f"{lichess_url}/api/account", headers=headers)
-    return response.json()
-
 # Função para obter a lista de partidas em andamento
 
 def obter_partidas_em_andamento():
@@ -21,15 +16,15 @@ def obter_partidas_em_andamento():
     return response.json()
 
 def fazer_movimento_com_base_na_analise(fen_da_partida, tempo_analise=1.0):
-    # Crie um tabuleiro a partir do FEN
+    # Crie um tabuleiro a partir do FEN da partida
     board = chess.Board(fen_da_partida)
 
-    # Analise a posição com o Stockfish
+    # Analisando a posição com o Stockfish
     move_info = engine.analyse(board, chess.engine.Limit(time=tempo_analise))
 
     movimentos_da_cor_atual = []
     for move in move_info.get("pv", []):
-        # Crie uma cópia temporária do tabuleiro
+        # Criando uma cópia temporária do tabuleiro
         temp_board = board.copy()
 
         if temp_board.is_legal(move):
